@@ -35,36 +35,28 @@
 #define CLRBIT(port,bit) ((port) &= ~(0x01 << (bit)))   //    Clr Byte bit
 
 //    PIUIO Bytes
-// This is for Byte1 of the player short
-
-#define BTN_TEST      0x02
-#define BTN_SERVICE   0x40
 
 // This is for Byte0 of the player short
 
-#define SENSOR_LU     0x01
-#define SENSOR_RU     0x02
-#define SENSOR_CN     0x04
-#define SENSOR_LD     0x08
-#define SENSOR_RD     0x10
+#define SENSOR_1     0x01
+#define SENSOR_2     0x02
+#define SENSOR_3     0x04
+#define SENSOR_4     0x08
+#define SENSOR_5     0x10
+#define SENSOR_6     0x20
+#define SENSOR_7     0x40
+#define SENSOR_8     0x80
 
 //    Clone Port Map
 
-//  Player 1 Maps
-#define GET_LU_P1    GETBIT(PINB,0)         //  Player 1 Upper Left at PORTB0 (pin D8)
-#define GET_RU_P1    GETBIT(PINB,1)         //  Player 1 Upper Right at PORTB1 (pin D9)
-#define GET_CN_P1    GETBIT(PINB,2)         //  Player 1 Center at PORTB2 (pin D10)
-#define GET_LD_P1    GETBIT(PINB,3)         //  Player 1 Down Left at PORTB3 (pin D11)
-#define GET_RD_P1    GETBIT(PINB,4)         //  Player 1 Down Right at PORTB4 (pin D12)
-#define GET_TEST     GETBIT(PIND,7)         //  Test Button at PORTD7 (pin D7)
-
-//  Player 2 Maps
-#define GET_LU_P2    GETBIT(PINC,0)         //  Player 2 Upper Left at PORTC0 (pin A0)
-#define GET_RU_P2    GETBIT(PINC,1)         //  Player 2 Upper Right at PORTC1 (pin A1)
-#define GET_CN_P2    GETBIT(PINC,2)         //  Player 2 Center at PORTC2 (pin A2)
-#define GET_LD_P2    GETBIT(PINC,3)         //  Player 2 Down Left at PORTC3 (pin A3)
-#define GET_RD_P2    GETBIT(PINC,4)         //  Player 2 Down Right at PORTC4 (pin A4)
-#define GET_SERVICE  GETBIT(PINC,5)         //  Service Button at PORTC5 (pin A5)
+#define GET_BUTTON_1 GETBIT(PINC,0)         // C0: (Pin A0) P1 Option
+#define GET_BUTTON_2 GETBIT(PINC,1)         // C1: (Pin A1) P1 Menu Left
+#define GET_BUTTON_3 GETBIT(PINC,2)         // C2: (Pin A2) P1 Menu Right
+#define GET_BUTTON_4 GETBIT(PINC,3)         // C3: (Pin A3) P1 Start
+#define GET_BUTTON_5 GETBIT(PINC,4)         // C4: (Pin A4) P2 Option
+#define GET_BUTTON_6 GETBIT(PINC,5)         // C5: (Pin A5) P2 Menu Left
+#define GET_BUTTON_7 GETBIT(PINB,3)         // B3: (Pin D11) P2 Menu Right
+#define GET_BUTTON_8 GETBIT(PINB,4)         // B4: (Pin D12) P2 Start
 
 
 //    Some Vars to help
@@ -116,23 +108,28 @@ void pollInputOutput()    {
     InputData[2] = 0xFF;
     InputData[3] = 0xFF;  
 
-    // PLS, someone DO THIS BETTER. LOL
+    // Handle button inputs (LS, someone DO THIS BETTER. LOL)
 
-    if(GET_LD_P1)   { InputData[0] |= SENSOR_LD;    }else{ InputData[0] &= ~(SENSOR_LD);    };
-    if(GET_LU_P1)   { InputData[0] |= SENSOR_LU;    }else{ InputData[0] &= ~(SENSOR_LU);    };
-    if(GET_CN_P1)   { InputData[0] |= SENSOR_CN;    }else{ InputData[0] &= ~(SENSOR_CN);    };
-    if(GET_RU_P1)   { InputData[0] |= SENSOR_RU;    }else{ InputData[0] &= ~(SENSOR_RU);    };
-    if(GET_RD_P1)   { InputData[0] |= SENSOR_RD;    }else{ InputData[0] &= ~(SENSOR_RD);    };
-
-
-    if(GET_LD_P2)   { InputData[2] |= SENSOR_LD;    }else{ InputData[2] &= ~(SENSOR_LD);    };
-    if(GET_LU_P2)   { InputData[2] |= SENSOR_LU;    }else{ InputData[2] &= ~(SENSOR_LU);    };
-    if(GET_CN_P2)   { InputData[2] |= SENSOR_CN;    }else{ InputData[2] &= ~(SENSOR_CN);    };
-    if(GET_RU_P2)   { InputData[2] |= SENSOR_RU;    }else{ InputData[2] &= ~(SENSOR_RU);    };
-    if(GET_RD_P2)   { InputData[2] |= SENSOR_RD;    }else{ InputData[2] &= ~(SENSOR_RD);    };
-
-    if(GET_SERVICE) { InputData[1] |= BTN_SERVICE;  }else{ InputData[1] &= ~(BTN_SERVICE);  };
-    if(GET_TEST)    { InputData[1] |= BTN_TEST;     }else{ InputData[1] &= ~(BTN_TEST);     };
+    if(GET_BUTTON_1)   { InputData[0] |= SENSOR_1;    }else{ InputData[0] &= ~(SENSOR_1);    };
+    if(GET_BUTTON_2)   { InputData[0] |= SENSOR_2;    }else{ InputData[0] &= ~(SENSOR_2);    };
+    if(GET_BUTTON_3)   { InputData[0] |= SENSOR_3;    }else{ InputData[0] &= ~(SENSOR_3);    };
+    if(GET_BUTTON_4)   { InputData[0] |= SENSOR_4;    }else{ InputData[0] &= ~(SENSOR_4);    };
+    if(GET_BUTTON_5)   { InputData[0] |= SENSOR_5;    }else{ InputData[0] &= ~(SENSOR_5);    };
+    if(GET_BUTTON_6)   { InputData[0] |= SENSOR_6;    }else{ InputData[0] &= ~(SENSOR_6);    };
+    if(GET_BUTTON_7)   { InputData[0] |= SENSOR_7;    }else{ InputData[0] &= ~(SENSOR_7);    };
+    if(GET_BUTTON_8)   { InputData[0] |= SENSOR_8;    }else{ InputData[0] &= ~(SENSOR_8);    };
+    
+    // Handle lamp outputs
+    
+    if(GETBIT(Output[0], 7)) { SETBIT(PORTB, 2); }else{ CLRBIT(PORTB, 2); }; //P1 Option
+    if(GETBIT(Output[0], 6)) { SETBIT(PORTB, 1); }else{ CLRBIT(PORTB, 1); }; //P1 Menu Left
+    if(GETBIT(Output[0], 5)) { SETBIT(PORTB, 0); }else{ CLRBIT(PORTB, 0); }; //P1 Menu Right
+    if(GETBIT(Output[0], 4)) { SETBIT(PORTD, 7); }else{ CLRBIT(PORTD, 7); }; //P1 Start
+    if(GETBIT(Output[0], 3)) { SETBIT(PORTD, 6); }else{ CLRBIT(PORTD, 6); }; //P2 Option
+    if(GETBIT(Output[0], 2)) { SETBIT(PORTD, 5); }else{ CLRBIT(PORTD, 5); }; //P2 Menu left
+    if(GETBIT(Output[0], 1)) { SETBIT(PORTD, 4); }else{ CLRBIT(PORTD, 4); }; //P2 Menu Right
+    if(GETBIT(Output[0], 0)) { SETBIT(PORTD, 3); }else{ CLRBIT(PORTD, 3); }; //P2 Start
+    
 
 }
 
@@ -140,13 +137,13 @@ int main() {
     unsigned char i;
     wdt_enable(WDTO_1S);
 
-    DDRB = 0;
-    DDRC = 0;
-    DDRD = 0;
+    DDRB = 0x18; //Set port pins B0-2 as outputs, 3-4 as inputs
+    DDRC = 0; //PortC should be all inputs
+    DDRD = 0xF8; //Leave port pins D0-2 untouched (for serial/USB), pins D3-7 as outputs
+    
 	// make it simpler and use internal pullups
-	PORTB =	0x3F;
-	PORTC = 0x3F;
-    PORTD = 0x80;
+	PORTB =	0x18; //Enable pullups on only port pins B3-4
+	PORTC = 0x3F; //Enable pullups on port pins C0-5
 	
     for(i=0;i<8;i++)
         InputData[i] = 0xFF;
